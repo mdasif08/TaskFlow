@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from typing import Optional
 
 # Constants
-TASK_NOT_FOUND_MSG = TASK_NOT_FOUND_MSG
+TASK_NOT_FOUND_MSG = "Task not found"
 from .database import get_db
 from .models import Task, User
 from .schemas import (

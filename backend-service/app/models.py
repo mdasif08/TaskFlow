@@ -27,8 +27,8 @@ class User(Base):
     username = Column(String(50), unique=True, index=True, nullable=False)
     email = Column(String(100), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
-    created_at = Column(DateTime, server_default=func.now)
-    updated_at = Column(DateTime, onupdate=func.now)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
     
     # Relationship to tasks
     tasks = relationship("Task", back_populates="assigned_user", cascade="all, delete-orphan")
@@ -43,8 +43,8 @@ class Task(Base):
     status = Column(Enum(TaskStatus), default=TaskStatus.PENDING, nullable=False)
     priority = Column(Enum(TaskPriority), default=TaskPriority.MEDIUM, nullable=False)
     assigned_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    created_at = Column(DateTime, server_default=func.now)
-    updated_at = Column(DateTime, onupdate=func.now)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
     
     # Relationship to user
     assigned_user = relationship("User", back_populates="tasks")
