@@ -1,5 +1,5 @@
 """
-Unit tests for ProjectPulse API
+Unit tests for TaskFlow API
 """
 import pytest
 from fastapi.testclient import TestClient
@@ -40,6 +40,8 @@ def test_user(test_db):
         "password": "testpassword"
     }
     response = client.post("/api/auth/signup", json=user_data)
+    if response.status_code != 200:
+        raise Exception(f"Failed to create test user: {response.text}")
     return response.json()
 
 @pytest.fixture
@@ -57,7 +59,7 @@ def test_root_endpoint():
     """Test root endpoint"""
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "ProjectPulse API is running"}
+    assert response.json() == {"message": "TaskFlow API is running"}
 
 def test_health_check():
     """Test health check endpoint"""
@@ -65,7 +67,7 @@ def test_health_check():
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
 
-def test_user_signup():
+def test_user_signup(test_db):
     """Test user registration"""
     user_data = {
         "username": "newuser",

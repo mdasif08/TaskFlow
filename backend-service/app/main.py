@@ -1,5 +1,5 @@
 """
-ProjectPulse Backend Service
+TaskFlow Backend Service
 FastAPI application entry point
 """
 import logging
@@ -23,7 +23,7 @@ except Exception as e:
 
 # Create FastAPI app
 app = FastAPI(
-    title="ProjectPulse API",
+    title="TaskFlow API",
     description="Task Management Microservice",
     version="1.0.0"
 )
@@ -31,7 +31,13 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://frontend-service:3000"],
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://localhost:3001", 
+        "http://192.168.29.92:3000",
+        "http://192.168.29.92:3001",
+        "http://frontend-service:3000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,7 +49,8 @@ app.include_router(router, prefix="/api")
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {"message": "ProjectPulse API is running"}
+    logger.info("TaskFlow API is running")
+    return {"message": "TaskFlow API is running"}
 
 @app.get("/health")
 async def health_check():

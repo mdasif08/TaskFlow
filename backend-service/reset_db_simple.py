@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple database reset script for ProjectPulse
+Simple database reset script for TaskFlow
 """
 import os
 import sys

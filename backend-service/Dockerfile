@@ -1,4 +1,4 @@
-# Multi-stage build for ProjectPulse Backend
+# Multi-stage build for TaskFlow Backend
 FROM python:3.11-slim AS builder
 
 # Set working directory

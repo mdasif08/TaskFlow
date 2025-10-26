@@ -10,7 +10,7 @@ from sqlalchemy.pool import StaticPool
 # Database URL from environment variable
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
-    "sqlite:///./projectpulse.db"
+    "sqlite:///./taskflow.db"
 )
 
 # Create SQLAlchemy engine

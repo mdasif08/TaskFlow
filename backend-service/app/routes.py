@@ -1,5 +1,5 @@
 """
-API routes for ProjectPulse
+API routes for TaskFlow
 """
 import logging
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -7,10 +7,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from typing import Optional
 
-# Constants
-TASK_NOT_FOUND_MSG = "Task not found"
 from .database import get_db
-from .models import Task, User
+from .models import Task, User, TaskStatus, TaskPriority
 from .schemas import (
     TaskCreate, TaskUpdate, Task as TaskSchema, 
     UserCreate, UserLogin, Token, User as UserSchema,
@@ -18,6 +16,9 @@ from .schemas import (
 )
 from .auth import authenticate_user, create_access_token, get_current_user, get_password_hash
 from datetime import timedelta
+
+# Constants
+TASK_NOT_FOUND_MSG = "Task not found"
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -98,8 +99,8 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
 async def get_tasks(
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
-    task_status: Optional[str] = Query(None),
-    priority: Optional[str] = Query(None),
+    task_status: Optional[TaskStatus] = Query(None),
+    priority: Optional[TaskPriority] = Query(None),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -137,11 +138,6 @@ async def create_task(
         
         # Automatically assign task to current user
         task_data = task.dict()
-        task_data['assigned_user_id'] = current_user.id
-        
-        # Remove assigned_user_id from the input if it was provided
-        if 'assigned_user_id' in task_data:
-            del task_data['assigned_user_id']
         task_data['assigned_user_id'] = current_user.id
         
         db_task = Task(**task_data)

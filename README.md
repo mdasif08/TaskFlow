@@ -1,10 +1,10 @@
-# ProjectPulse - Microservices Task Management Platform
+# TaskFlow - Microservices Task Management Platform
 
 A complete, production-ready microservices-based task management platform built with FastAPI, React, PostgreSQL, Docker, and GitHub Actions CI/CD.
 
 ## 🏗️ Architecture Overview
 
-ProjectPulse demonstrates modern microservices architecture with:
+TaskFlow demonstrates modern microservices architecture with:
 
 - **Backend Service**: FastAPI + SQLAlchemy + JWT authentication
 - **Frontend Service**: React + Vite + Tailwind CSS + Axios
@@ -15,7 +15,7 @@ ProjectPulse demonstrates modern microservices architecture with:
 ## 📁 Project Structure
 
 ```
-ProjectPulse/
+TaskFlow/
 ├── backend-service/          # FastAPI microservice
 │   ├── app/
 │   │   ├── main.py          # FastAPI application
@@ -52,7 +52,7 @@ ProjectPulse/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd ProjectPulse
+   cd TaskFlow
    ```
 
 2. **Start all services**

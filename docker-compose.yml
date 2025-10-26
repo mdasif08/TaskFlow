@@ -4,20 +4,20 @@ services:
   # PostgreSQL Database
   database:
     image: postgres:15-alpine
-    container_name: projectpulse-db
+    container_name: taskflow-db
     environment:
-      POSTGRES_DB: projectpulse
-      POSTGRES_USER: projectpulse
-      POSTGRES_PASSWORD: projectpulse
+      POSTGRES_DB: taskflow
+      POSTGRES_USER: taskflow
+      POSTGRES_PASSWORD: taskflow
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - projectpulse-network
+      - taskflow-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U projectpulse"]
+      test: ["CMD-SHELL", "pg_isready -U taskflow"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,9 +27,9 @@ services:
     build:
       context: ./backend-service
       dockerfile: Dockerfile
-    container_name: projectpulse-backend
+    container_name: taskflow-backend
     environment:
-      DATABASE_URL: postgresql://projectpulse:projectpulse@database:5432/projectpulse
+      DATABASE_URL: postgresql://taskflow:taskflow@database:5432/taskflow
       SECRET_KEY: your-secret-key-change-in-production
       ALGORITHM: HS256
       ACCESS_TOKEN_EXPIRE_MINUTES: 30
@@ -39,7 +39,7 @@ services:
       database:
         condition: service_healthy
     networks:
-      - projectpulse-network
+      - taskflow-network
     volumes:
       - ./backend-service:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
@@ -54,15 +54,15 @@ services:
     build:
       context: ./frontend-service
       dockerfile: Dockerfile
-    container_name: projectpulse-frontend
+    container_name: taskflow-frontend
     environment:
-      VITE_API_URL: http://localhost:8000/api
+      VITE_API_URL: http://192.168.29.92:8000/api
     ports:
       - "3000:3000"
     depends_on:
       - backend-service
     networks:
-      - projectpulse-network
+      - taskflow-network
     volumes:
       - ./frontend-service:/app
       - /app/node_modules
@@ -72,5 +72,5 @@ volumes:
   postgres_data:
 
 networks:
-  projectpulse-network:
+  taskflow-network:
     driver: bridge

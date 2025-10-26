@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database reset script for ProjectPulse
+Database reset script for TaskFlow
 This script will delete the existing database and recreate it with fresh tables
 """
 import os
@@ -21,18 +21,18 @@ def reset_database():
         Base.metadata.create_all(bind=engine)
         
         print("Database reset completed successfully!")
-        print("Database file: projectpulse.db")
+        print("Database file: taskflow.db")
         
     except Exception as e:
         print(f"Error resetting database: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
-    print("ProjectPulse Database Reset")
+    print("TaskFlow Database Reset")
     print("=" * 40)
     
     # Check if database file exists
-    db_file = Path("projectpulse.db")
+    db_file = Path("taskflow.db")
     if db_file.exists():
         print(f"Found existing database: {db_file}")
         response = input("This will delete all data. Continue? (y/N): ")

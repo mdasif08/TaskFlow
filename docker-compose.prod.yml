@@ -4,28 +4,28 @@ services:
   # PostgreSQL Database
   database:
     image: postgres:15-alpine
-    container_name: projectpulse-db-prod
+    container_name: taskflow-db-prod
     environment:
-      POSTGRES_DB: projectpulse
-      POSTGRES_USER: projectpulse
+      POSTGRES_DB: taskflow
+      POSTGRES_USER: taskflow
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - projectpulse-network
+      - taskflow-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U projectpulse"]
+      test: ["CMD-SHELL", "pg_isready -U taskflow"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   # Backend Service
   backend-service:
-    image: ${DOCKER_USERNAME}/projectpulse-backend:latest
-    container_name: projectpulse-backend-prod
+    image: ${DOCKER_USERNAME}/taskflow-backend:latest
+    container_name: taskflow-backend-prod
     environment:
-      DATABASE_URL: postgresql://projectpulse:${POSTGRES_PASSWORD}@database:5432/projectpulse
+      DATABASE_URL: postgresql://taskflow:${POSTGRES_PASSWORD}@database:5432/taskflow
       SECRET_KEY: ${SECRET_KEY}
       ALGORITHM: HS256
       ACCESS_TOKEN_EXPIRE_MINUTES: 30
@@ -35,7 +35,7 @@ services:
       database:
         condition: service_healthy
     networks:
-      - projectpulse-network
+      - taskflow-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -45,8 +45,8 @@ services:
 
   # Frontend Service
   frontend-service:
-    image: ${DOCKER_USERNAME}/projectpulse-frontend:latest
-    container_name: projectpulse-frontend-prod
+    image: ${DOCKER_USERNAME}/taskflow-frontend:latest
+    container_name: taskflow-frontend-prod
     environment:
       VITE_API_URL: ${API_URL}
     ports:
@@ -54,12 +54,12 @@ services:
     depends_on:
       - backend-service
     networks:
-      - projectpulse-network
+      - taskflow-network
     restart: unless-stopped
 
 volumes:
   postgres_data:
 
 networks:
-  projectpulse-network:
+  taskflow-network:
     driver: bridge

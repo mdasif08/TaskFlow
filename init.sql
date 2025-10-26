@@ -1,4 +1,4 @@
--- ProjectPulse Database Initialization
+-- TaskFlow Database Initialization
 -- This file is executed when the PostgreSQL container starts for the first time
 
 -- Create database if it doesn't exist (handled by POSTGRES_DB env var)

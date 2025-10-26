@@ -1,4 +1,4 @@
-# Multi-stage build for ProjectPulse Frontend
+# Multi-stage build for TaskFlow Frontend
 FROM node:18-alpine AS builder
 
 # Set working directory
